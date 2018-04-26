@@ -1,0 +1,82 @@
+﻿@using Argosy.Web.FrontEnd.Models
+@{
+    ViewBag.Title = "~{OrderMaintenance}~";
+
+    ViewBag.Navigation.Add(new NavigationAction()
+    {
+        Name = "Administrative Menu",
+        InnerClass = "active"
+    });
+}
+<section class="extra">
+    <div class="container">
+        <h3 class="padu5 padb5">Choose from one of the following Administrative Options:</h3>
+        <div class="clear">
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Orders", new {area = "Admin"})><p class="folder-name"><i class="fa fa-warning"></i><br />Orders</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "RMA", new {area = "Admin"})><p class="folder-name"><i class="fa fa-barcode"></i><br />Order RMAs</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Parts", new {area = "Admin"})><p class="folder-name"><i class="fa fa-cogs"></i><br />Parts</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Users", new {area = "Admin"})><p class="folder-name"><i class="fa fa-user"></i><br />Users</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth col_last">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Reports", new {area = "Admin"})><p class="folder-name"><i title="Part History" class="fa fa-bar-chart-o"></i><br />Reporting</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Messages", new {area = "Admin" })><p class="folder-name"><i title="Part History" class="fa fa-calculator"></i><br />Accounting Units</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Messages", new {area = "Admin" })><p class="folder-name"><i title="Part History" class="fa fa-clipboard"></i><br />Asset Maintenance</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Messages", new {area = "Admin" })><p class="folder-name"><i title="Part History" class="fa fa-phone"></i><br />Campaigns</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Dashboards", new {area = "Admin"})><p class="folder-name"><i class="fa fa-dashboard"></i><br />Dashboards</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth col_last">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "GlobalProfiles", new {area = "Admin"})><p class="folder-name"><i class="fa fa-group"></i><br />Global Profiles</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Messages", new {area = "Admin" })><p class="folder-name"><i title="Part History" class="fa fa-desktop"></i><br />Theme Picker</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "Messages", new {area = "Admin" })><p class="folder-name"><i title="Part History" class="fa fa-comments"></i><br />Message Center</p></a>
+                </div>
+            </div>
+            <div class="col_one_fifth">
+                <div class="menu-box">
+                    <a href=@Url.Action("Index", "HelpDesk", new {area = "Admin"})><p class="folder-name"><i class="fa fa-question-circle"></i><br />Help Desk</p></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,27 @@
+﻿{
+  "TotalRecords": 2,
+  "Skip": 0,
+  "Take": 50,
+  "ReturnCode": 200,
+  "Records": [
+    {
+      "Id": 26556,
+      "GlobalFormsId": 29,
+      "Name": "Proba",
+      "GlobalFormName": "Campaign",
+      "DateModified": "2018-04-20T06:58:09.853",
+      "IsActive": true
+    },
+    {
+      "Id": 26554,
+      "GlobalFormsId": 29,
+      "Name": "Test",
+      "GlobalFormName": "Campaign",
+      "DateModified": "2018-04-20T04:21:02.87",
+      "IsActive": true
+    }
+  ],
+  "Message": null,
+  "Guid": null,
+  "ReturnResponse": null
+}

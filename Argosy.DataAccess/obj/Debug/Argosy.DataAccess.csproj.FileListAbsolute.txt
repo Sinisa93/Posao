@@ -1,0 +1,12 @@
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\bin\Debug\Argosy.DataAccess.dll.config
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\bin\Debug\Argosy.DataAccess.dll
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\bin\Debug\Argosy.DataAccess.pdb
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\bin\Debug\EntityFramework.dll
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\bin\Debug\EntityFramework.xml
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.csprojResolveAssemblyReference.cache
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.csproj.CopyComplete
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.dll
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.pdb

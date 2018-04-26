@@ -1,0 +1,233 @@
+﻿@using Argosy.Web.FrontEnd.Models
+@model Argosy.BusinessLogic.FrontEnd.Managers.ThemeManager.ThemesViewModel
+@{
+    ViewBag.Title = "~{ThemePicker}~";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Navigation.Add(new NavigationAction { Name = "~{Admin}~", InnerClass = "active" });
+    ViewBag.Navigation.Add(new NavigationAction { Name = "~{ThemePicker}~", InnerClass = "active" });
+}
+<section class="extra">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="pad5">
+                    <div id="divExistingThemes">
+                        <h3>~{CurrentCompanyTheme}~: <span id="currentTheme">@Model.CurrentThemeName</span></h3>
+                        <div class="clearfix">
+                            @{
+                                var standardThemesGroup = Model.ThemeGroupings.FirstOrDefault(tg => tg.Name.Equals("Standard Themes"));
+                                var createdThemesGroup = Model.ThemeGroupings.FirstOrDefault(tg => tg.Name.Equals("Created Themes"));
+                                var showCreatedThemes = createdThemesGroup != null;
+                            }
+                            <div class="col-sm-6 padu10">
+                                <h4>~{StandardThemes}~</h4>
+                                <ul class="tc-theme-list" id="StandardThemes">
+                                    @foreach (var themeInfo in standardThemesGroup.ThemeInfoList)
+                                    {
+                                        <li class="tc-item" id="@themeInfo.ThemeId">
+                                            <div class="input-style">
+                                                <input name="themegroup"
+                                                       value="@themeInfo.ThemeId"
+                                                       @if (themeInfo.ThemeId == Model.CurrentThemeId) { @: checked
+                                                       }
+                                                       class="bootstrap-toggle"
+                                                       type="radio"
+                                                       id="@themeInfo.ThemeId"
+                                                       onclick="changeCSS('/Style/ChangeCss/@themeInfo.ThemeId')" />
+                                                <label class="tc-name" for="@themeInfo.ThemeId">
+                                                    @themeInfo.Name
+                                                    @if (themeInfo.IsDefault)
+                                                    {
+                                                        @:(Default)
+                                                    }
+                                                </label>
+                                            </div>
+                                            <div class="label-style">
+                                                <span class="tc-color" name="primary" style="background-color: @themeInfo.PrimaryColor"></span>
+                                                <span class="tc-color" name="secondary" style="background-color: @themeInfo.SecondaryColor"></span>
+                                                <span class="tc-color" name="tertiary" style="background-color: @themeInfo.TertiaryColor"></span>
+                                                <span class="marl10">
+                                                    <a data-argosy-dataid="@themeInfo.ThemeId" data-argosy-action="editTheme" id="showBuildTheme">
+                                                        <i title="Add new Theme with these styles" class="fa fa-plus" data-id="@themeInfo.ThemeId"></i>
+                                                    </a>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="col-sm-6 padu10" id="CreatedThemesDiv" @if (!showCreatedThemes) { @: style="display:none"
+                                 }>
+                                <h4>~{CreatedThemes}~</h4>
+                                <ul class="tc-theme-list" id="CreatedThemes">
+                                    @if (showCreatedThemes)
+                                    {
+                                        foreach (var themeInfo in createdThemesGroup.ThemeInfoList)
+                                        {
+                                            <li class="tc-item" id="@themeInfo.ThemeId">
+                                                <div class="input-style">
+                                                    <input name="themegroup"
+                                                           value="@themeInfo.ThemeId"
+                                                           @if (themeInfo.ThemeId == Model.CurrentThemeId) { @: checked
+                                                           }
+                                                           class="bootstrap-toggle"
+                                                           type="radio"
+                                                           id="@themeInfo.ThemeId"
+                                                           onclick="changeCSS('/Style/ChangeCss/@themeInfo.ThemeId')" />
+                                                    <label class="tc-name" for="@themeInfo.ThemeId">
+                                                        @themeInfo.Name
+                                                    </label>
+                                                </div>
+                                                <div class="label-style">
+                                                    <span class="tc-color" name="primary" style="background-color: @themeInfo.PrimaryColor"></span>
+                                                    <span class="tc-color" name="secondary" style="background-color: @themeInfo.SecondaryColor"></span>
+                                                    <span class="tc-color" name="tertiary" style="background-color: @themeInfo.TertiaryColor"></span>
+                                                    <span class="marl10">
+                                                        <a data-argosy-dataid="@themeInfo.ThemeId" data-argosy-action="editTheme" id="showBuildTheme">
+                                                            <i title="Edit this Theme" class="fa fa-pencil" data-id="@themeInfo.ThemeId"></i>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="">
+                            <button id="btnConfirmSession" onclick="updateSessionTheme()" class="btn btn-default marb10">~{PreviewInSession}~</button>
+                            <button id="btnConfirmCompanyTheme" onclick="updateCompanyTheme()" class="btn btn-default marb10">~{SetAsCompanyTheme}~</button>
+                            <button id="btnBackToEditTheme" onclick="backToBuildTheme()" class="btn btn-default marb10">~{BackEditTheme}~</button>
+                        </div>
+                        <br style="clear: both" />
+                    </div>
+                    <a id="chooseTheme" class="btn btn-primary btn-bigger btn-block" data-argosy-action="showStandardThemes">
+                        ~{BuildOwnTheme}~
+                    </a>
+                    <div data-argosy-control="Theme">
+                    </div>
+                    <div id="divBuildTheme" style="display:none">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row pad5">
+                    <div class="col-sm-12">
+                        <div class="col-sm-8">
+                            <h1>Main Header</h1>
+                            <h3 class="padu10">Sub Header</h3>
+                            <div class="panel-group pad10" role="tablist" aria-multiselectable="true">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading group-heading" role="tab" id="heading${i}${x}">
+                                        <a role="button" data-toggle="collapse" href="\\#collapse${i}${x}" aria-expanded="true" aria-controls="collapse${i}${x}">
+                                            <h4 class="panel-title">
+                                                Collapsible Section
+                                            </h4>
+                                        </a>
+                                    </div>
+                                    <div id="collapse${i}${x}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading${i}${x}">
+                                        <div class="panel-body padu10">
+                                            <p class="padb10 marr20">
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet,
+                                                consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem
+                                                ipsum dolor sit amet. <a>this is the link color</a> consectetur adipiscing elit.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-primary" title="btn-primary"><i class="fa fa-star"></i> CTA</a>
+                            <a href="#" class="btn btn-default" title="btn-dafault"><i class="fa fa-check"></i> General</a>
+                            <a href="#" class="btn btn-success" title="btn-success"><i class="fa fa-save"></i> Action</a>
+                            <a href="#" class="btn btn-link" title="btn-link"><i class="fa fa-link"></i> Link</a>
+                            <div class="col-sm-6  maru20">
+                                <div class="w100">
+                                    <ol class="progtrckr" data-progtrckr-steps="1">
+                                        <li class="progtrckr-done">Checkout Flow</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 maru30">
+                                <div>
+                                    <input type="radio" id="sample_radio" checked="" value="0">
+                                    <label for="">Radio Sample</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="sample_radio" checked="" value="0">
+                                    <label for="">Checkbox Sample</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4 ">
+                            <div class="product-image-wrapper">
+                                <div class="single-item">
+                                    <div class="productinfo text-center" style="background: #FFFFFF;">
+                                        <div>
+                                            <a class="fancybox" href="#"><img class="img-responsive" style="min-width: 100%" title="Enlarge Image" alt="Part SKU" src="/content/images/placeholder/product6.png" /></a>
+                                        </div>
+                                        <div class="product-bkg">
+                                            <a class="fancybox" href="\#divPartDetails">
+                                                <p class="product-name">Product Name</p>
+                                            </a>
+                                            <p class="product-price">$109.99</p>
+                                            <p class="product-ship">Ships in 5 days</p>
+                                            <div class="choose clearfix">
+                                                <div>
+                                                    <a data-argosy-action="addProductHover" class="sm-icon" data-argosy-target=".single-item"><i title="More Details" class="fa fa-info-circle"></i></a>
+                                                </div>
+                                                <div>
+                                                    <a href="\#divPartHistory" class="sm-icon fancybox"><i title="Part History" class="fa fa-bar-chart-o"></i></a>
+                                                </div>
+                                                <div>
+                                                    <a data-argosy-action="addRapidOrder" data-argosy-dataid="${id}" class="sm-icon selected"><i title="Favorite" class="fa fa-star"></i></a>
+                                                </div>
+                                                <div class="trigger">
+                                                    <a href="" class="btn btn-primary btn-sm" title="btn-primary btn-sm / btn-prime"><i class="fa fa-shopping-cart"></i> btn-primary sm</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="product-overlay">
+                                            <div class="overlay-content">
+                                                <p class="product-name">Sample Product</p>
+                                                <p>The description adds more detail to what the product is, materials it is made of, etc.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br style="clear:both" />
+                    </div>
+                    <div class="col-sm-12">
+                        <div id="sample_grid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="show_standard_themes" style="display: none" class="row text-center">
+            <ul class="tc-theme-list">
+                @foreach (var themeInfo in standardThemesGroup.ThemeInfoList)
+                {
+                    <li class="tc-item marb10" id="@themeInfo.ThemeId">
+                        <span>
+                            <a data-argosy-dataid="@themeInfo.ThemeId" data-argosy-action="editTheme" class="btn btn-primary">
+                                ~{UseStyle}~
+                            </a>
+                            &nbsp;&nbsp;@themeInfo.Name
+                            @if (themeInfo.IsDefault)
+                            {
+                                @:(Default)
+                            }
+                        </span>
+                        <span class="floatr maru5 marl10 marr5">
+                            <span class="tc-color" name="primary" style="background-color: @themeInfo.PrimaryColor"></span>
+                            <span class="tc-color" name="secondary" style="background-color: @themeInfo.SecondaryColor"></span>
+                            <span class="tc-color" name="tertiary" style="background-color: @themeInfo.TertiaryColor"></span>
+                        </span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</section>

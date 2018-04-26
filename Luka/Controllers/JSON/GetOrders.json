@@ -1,0 +1,49 @@
+﻿{
+  "TotalRecords": 2,
+  "Skip": 0,
+  "Take": 50,
+  "ReturnCode": 200,
+  "Records": [
+    {
+      "OrderNumber": "PPP-39532",
+      "OrderDate": "2018-04-20T04:44:16.427",
+      "FirstName": "Luka",
+      "LastName": "Lukic",
+      "OrderTag": null,
+      "Status": "R",
+      "CarrierName": "FREE Ground Shipping",
+      "OrderTotal": 49.99,
+      "OrderApprover": "",
+      "Address1": "1234 Anystreet",
+      "Address2": "",
+      "Address3": "",
+      "City": "Anytown",
+      "StateName": "Texas",
+      "Zip": "12345",
+      "RetailProjectId": null,
+      "RetailProjectName": null
+    },
+    {
+      "OrderNumber": "PPP-39528",
+      "OrderDate": "2018-04-20T04:33:35.483",
+      "FirstName": "Luka",
+      "LastName": "Lukic",
+      "OrderTag": null,
+      "Status": "R",
+      "CarrierName": "FREE Ground Shipping",
+      "OrderTotal": 181.98,
+      "OrderApprover": "",
+      "Address1": "1234 Anystreet",
+      "Address2": "",
+      "Address3": "",
+      "City": "Anytown",
+      "StateName": "Texas",
+      "Zip": "12345",
+      "RetailProjectId": null,
+      "RetailProjectName": null
+    }
+  ],
+  "Message": null,
+  "Guid": null,
+  "ReturnResponse": null
+}

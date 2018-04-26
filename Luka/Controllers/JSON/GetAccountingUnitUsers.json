@@ -1,0 +1,131 @@
+﻿{
+  "TotalRecords": 30921,
+  "Skip": 0,
+  "Take": 10,
+  "ReturnCode": 200,
+  "Records": [
+    {
+      "AccountingUnitUserId": 2,
+      "AccountingUnitId": 2255,
+      "UserId": 63460,
+      "UserGroupId": null,
+      "Username": "kfrazier-wctc@sbcglobal.net",
+      "FirstName": "Kathleen",
+      "LastName": "Frazier",
+      "IsDefault": true,
+      "AccountingUnit": "02901",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 4,
+      "AccountingUnitId": 2255,
+      "UserId": 63463,
+      "UserGroupId": null,
+      "Username": "louise@kellerits.com",
+      "FirstName": "Louise",
+      "LastName": "Checketts",
+      "IsDefault": true,
+      "AccountingUnit": "02901",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 6,
+      "AccountingUnitId": 2345,
+      "UserId": 63468,
+      "UserGroupId": null,
+      "Username": "sglaser@stewart.com",
+      "FirstName": "Sandra",
+      "LastName": "Glaser",
+      "IsDefault": true,
+      "AccountingUnit": "08901",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 7,
+      "AccountingUnitId": 3381,
+      "UserId": 63471,
+      "UserGroupId": null,
+      "Username": "epierce@stewart.com-disable",
+      "FirstName": "Evonne",
+      "LastName": "Pierce",
+      "IsDefault": true,
+      "AccountingUnit": "38601",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 8,
+      "AccountingUnitId": 3140,
+      "UserId": 63472,
+      "UserGroupId": null,
+      "Username": "sabbott@stewart.com",
+      "FirstName": "Seth",
+      "LastName": "Abbott",
+      "IsDefault": true,
+      "AccountingUnit": "99.71299",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 11,
+      "AccountingUnitId": 3352,
+      "UserId": 63480,
+      "UserGroupId": null,
+      "Username": "shclark@stewart.com-disable",
+      "FirstName": "Shayla ",
+      "LastName": "Clark",
+      "IsDefault": true,
+      "AccountingUnit": "43899",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 14,
+      "AccountingUnitId": 2615,
+      "UserId": 63495,
+      "UserGroupId": null,
+      "Username": "Dnuestro@stewart.com",
+      "FirstName": "Dolora ",
+      "LastName": "Nuestro",
+      "IsDefault": true,
+      "AccountingUnit": "41599",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 15,
+      "AccountingUnitId": 3382,
+      "UserId": 63496,
+      "UserGroupId": null,
+      "Username": "donna.whitfield@stewart.com",
+      "FirstName": "Donna ",
+      "LastName": "Whitfield",
+      "IsDefault": true,
+      "AccountingUnit": "13.79470",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 21,
+      "AccountingUnitId": 2255,
+      "UserId": 63520,
+      "UserGroupId": null,
+      "Username": "suffolktitle1@charter.net",
+      "FirstName": "Sharon",
+      "LastName": "Snook",
+      "IsDefault": true,
+      "AccountingUnit": "02901",
+      "UserGroupName": null
+    },
+    {
+      "AccountingUnitUserId": 26,
+      "AccountingUnitId": 2255,
+      "UserId": 63540,
+      "UserGroupId": null,
+      "Username": "epw4@bellsouth.net",
+      "FirstName": "Timothy",
+      "LastName": "Kenney",
+      "IsDefault": true,
+      "AccountingUnit": "02901",
+      "UserGroupName": null
+    }
+  ],
+  "Message": null,
+  "Guid": null,
+  "ReturnResponse": null
+}

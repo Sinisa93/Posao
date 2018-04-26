@@ -1,0 +1,41 @@
+dodata area Admin:
+- PocetnaController
+u additional content
+dodate su dvije klase AdminOnlyAttribute i BaseController (zbog pocetna controller-a)
+
+U view index.cshtml u 
+{} zagradama dodate dvije linije koda viewbag.title i viewbagNavigation
+
+-ThemeController
+Na stranici Admin/Theme/index korisniku se prikazuju 2 vrste templejta, kreirani (koje je klijent napravio) i standardni. Klikom na neki od  
+u Kontroleru Theme, obradjena akcija index, unutar te funkcije zakomentarisano pozivanje metode ThemeManager.GetViewModel() i u kontroleru hardkodovani podaci tako da  umjesto toga u indeksu hardkodovani podaci koji ce biti ispisani prilikom poziva stranice Admin/Theme/index/1.
+u ThemeManager zakomentarisana 33,34,35 linija koda, jer ne radimo sa bazom.
+zakomentarisana 39,84, 92, 104, 121 linija koda u ThemeManager,
+U theme controlleru pravimo instancu na themeviewmodel, koja ce sadrzati sve podatke koji treba da budu vraceni,  i koja ce se vratiti na kraju akcije
+ pristupamo svojstvu currentthemeid i currentthemename i dodajemo hardkodovane vrednosti.
+pristupamo svojstvu themegroupings i pravimo listu koja ce biti tipa themegrouping da bii mogli da bi mogli da pristupimo svojstvu NAME i listi tipa ThemeInfo
+pravimo dvije liste tipa themeInfo, jedna ce sadrzati standardne teme, a druga kreirane teme
+zatim u obe liste dodajemo njihova svojstva(posto je lista svojstvo unutar klase ThemeInfo tipa lista, pravimo instancu ThemeInfo i unutar nje navodimo sva svojstva koja ce se popuniti u ove dvije liste u kontroleru
+na 51 i 52 liniji koda sa viewModel.ThemeGroupings.Add pozivamo konstruktor i prosledjujemo mu 2 podatka, listu koju smo napravili u prethodnim linijama koda i ime teme)
+na kraju akcije u Return vracamo viewModel tj sve ono sto smo dodali hardkodovano...
+
+da bi na toj strani mogli da menjamo izgled teme, tako sto bi kliknuli na neku od postojecih, morao sam da ubacim novi kontroler StyleController.cs.
+u kontroleru StyleController.cs nam je bitan dogadjaj CssChange(). Sve ostalo sem dogadjaja CssChange() je u tom kontroleru zakomentarisano.
+u akciji CssChange zakomentarisana je prva linija koda vezana za themeManager jer ne radimo sa bazom.
+Takodje sam u istoj akciji zakomentarisao i sledece linije koda: IQueryable<ESM_THEME> theme; //theme = themeManager.Find(t => t.THEME_ID == id); //styleSheet = theme.Select(t => t.STYLESHEET).FirstOrDefault();
+Dodao sam dvije liste, listaStilova(tipa ESM_THEME)i ona je bitna jer ce sadrzati hardkodovane podatke koji ce zameniti one koji se cupaju iz baze i druga lista stilTema(tip ESM_THEME_STYLE) koja ce se proslediti svojstvu ESM_THEME_STYLE iz prve liste.
+listaStilova.Select(t => t.STYLESHEET).FirstOrDefault(); ovom linijom koda sam izvrsio linq upit nad listom i kao rezultat dodedljen je referenci styleSheet u sledecoj liniji koda
+napravljena je promenljiva file u kojoj iscitavamo celi fajl style.css, tj css kod koji je u njemu.
+u Content folderu napravljen je novi css fajl nazvan style.css i u njemu su prekopirani css podaci koje smo uhvatili iz browsera prilikom testiranja akcije na njihovom sajtu.
+
+
+ 
+
+Action Create
+u additional contentu dodata klasa ThemeManager  i unutar nje za ovu akciju zakomentarisano je sve sem metoda ThemeEnum, ThemeInfo, ThemeGrouping i ThemeViewModel.
+
+u toku je obrada akcije Create(), unutar akcije je promjenjeno da kao parametar prosledjuje Theme theme i unutar akcije je promjenjena linija koda sto se tice pravljenje instance.. pravi se instanca var response=new Theme(theme)... Dodate su klase esm_theme, esm_theme_group, esm_theme_option, esm_theme_structre, esm_theme_style_IObjectMap, MessageSeverity, Error Type i MethodStatus.
+u Theme klasi dodata 2 konstruktora Theme(theme t) i podrazumevani, a u esm_theme je zakomentarisano telo konstruktora i kod pri dnu klase...
+
+
+
