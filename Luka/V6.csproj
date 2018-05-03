@@ -144,6 +144,7 @@
     <Compile Include="AdditionalContent\Areas\Admin\Home\AdminOnlyAttribute.cs" />
     <Compile Include="AdditionalContent\Areas\Admin\Home\BaseController.cs" />
     <Compile Include="AdditionalContent\Areas\Admin\Theme\ErrorType.cs" />
+    <Compile Include="AdditionalContent\Areas\Admin\Theme\ESM_COMPANY.cs" />
     <Compile Include="AdditionalContent\Areas\Admin\Theme\ESM_THEME.cs" />
     <Compile Include="AdditionalContent\Areas\Admin\Theme\ESM_THEME_GROUP.cs" />
     <Compile Include="AdditionalContent\Areas\Admin\Theme\ESM_THEME_OPTION.cs" />
@@ -318,19 +319,24 @@
     <Content Include="Controllers\JSON\GetTheme.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ControlLoader.js" />
+    <Content Include="Scripts\controls.min.js" />
     <Content Include="Scripts\controls\Message.js" />
     <Content Include="Scripts\controls\Theme.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-3.2.1.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.1.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jQueryLibs.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\page\Admin\Theme\Index.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\uIControls.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

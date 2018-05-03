@@ -114,12 +114,42 @@ namespace Luka.Areas.Admin
         //    var response = new ThemeManager().Update(theme);
         //    return Json(response);
         //}
+        public ActionResult Update()
+        {
+            var listaStilova = new List<ThemeStyle>();
+            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 333, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#752d3c" });
+            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 334, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#734d3c" });
+            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 335, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#712d3c" });
+            var response = new Theme()
+            {
+                CompanyId = 1,
+                GroupName = "Created Themes",
+                DateCreated = DateTime.Now,
+                Href = null,
+                IsDefault = false,
+                IsDeletable = true,
+                IsSystem = false,
+                Name = "Proba",
+                PrimaryColor = "#752d3c",
+                SecondaryColor = "#666666",
+                SiteId = 35,
+                StyleSheet = null,
+                TertiaryColor = "#752d3c",
+                ThemeStructure = null,
+                ThemeStructureId = 1,
+                ThemeStyles = listaStilova,
+                //Id = 475
 
+
+            };
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
         //[AdminOnly]
         //public ActionResult Delete(ThemeManager.Theme theme)
         //{
         //    var response = new ThemeManager().Delete(theme);
         //    return Json(response);
+
         //}
 
         //public void UpdateThemeGroup(ThemeManager.ThemeGroup themeGroup)
