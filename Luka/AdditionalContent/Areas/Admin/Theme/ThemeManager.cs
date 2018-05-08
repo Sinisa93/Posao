@@ -30,6 +30,213 @@ namespace Argosy.BusinessLogic.FrontEnd.Managers
             public int CurrentThemeId;
             public List<ThemeGrouping> ThemeGroupings;
         }
+
+        public new MethodStatus<Theme> Create(Theme theme)
+        {
+            var status = new MethodStatus<Theme>();
+            try
+            {
+                var themeOptionManagerList = new List<ESM_THEME_OPTION>();
+                var companyId = FrontEndSession.Instance.CompanyId.GetValueOrDefault(0);
+                var siteId = FrontEndSession.Instance.SiteId.GetValueOrDefault(0);
+                var sessionThemeId = 1;
+                var companyThemeId = 1;
+                var esmTheme = new ESM_THEME
+                {
+                    GROUP_NAME = "Created Themes",
+                    IS_DEFAULT = false,
+                    IS_SYSTEM = false,
+                    DATE_CREATED = DateTime.Now,
+                    COMPANY_ID = 1,
+                    SITE_ID = 1,
+                    THEME_STRUCTURE_ID = theme.ThemeStructureId,
+                    HREF = theme.Href,
+                    NAME = theme.Name,
+                    STYLESHEET = theme.StyleSheet,
+                    PRIMARY_COLOR = theme.PrimaryColor,
+                    SECONDARY_COLOR = theme.SecondaryColor,
+                    TERTIARY_COLOR = theme.TertiaryColor
+
+                };
+
+                foreach (var themeStyle in theme.ThemeStyles)
+                {
+                    var esmThemeStyle = new ESM_THEME_STYLE
+                    {
+                        THEME_ID = esmTheme.THEME_ID,
+                        THEME_GROUP_ID = themeStyle.ThemeGroupId,
+                        DISPLAY_NAME = themeStyle.DisplayName,
+                        NAME = themeStyle.Name,
+                        SELECTOR = themeStyle.Selector,
+                        ROLE = themeStyle.Role,
+                        IS_PRIMARY = themeStyle.IsPrimary,
+                        IS_SECONDARY = themeStyle.IsSecondary,
+                        IS_TERTIARY = themeStyle.IsTertiary
+                    };
+                    if (themeStyle.DisplayName.Equals("Body Background Image") && !themeStyle.Value.Equals("none"))
+                    {
+                        //var backgroundImageValue = themeStyle.Value.Replace("url(", string.Empty).Replace(")", string.Empty);
+                        var backgroundImageUrl = "";
+                        //var backgroundImageUrl = GetBackgroundImageUrl(backgroundImageValue);
+                        esmThemeStyle.VALUE = string.IsNullOrEmpty(backgroundImageUrl)
+                                                ? "none"
+                                                : $"url({backgroundImageUrl})";
+                    }
+                    else
+                    {
+                        esmThemeStyle.VALUE = themeStyle.Value;
+                    }
+
+                    if (themeStyle.ThemeOptions == null) continue;
+                    foreach (var themeOption in themeStyle.ThemeOptions)
+                    {
+                        themeOptionManagerList.Add(new ESM_THEME_OPTION
+                        {
+                            THEME_STYLE_ID = esmThemeStyle.THEME_STYLE_ID,
+                            VALUE = themeOption.Value,
+                            TEXT = themeOption.Text,
+                            IS_SELECTED = themeOption.IsSelected
+                        });
+                    }
+                }
+                theme.IsDeletable = companyThemeId != theme.Id && sessionThemeId != theme.Id && !theme.IsSystem;
+                status.Data = theme;
+            }
+            catch (Exception err)
+            {
+                status.ErrorType = ErrorType.Unhandled;
+                status.IsError = true;
+                status.MessageSeverity = MessageSeverity.Error;
+            }
+            return status;
+        }
+
+        public new MethodStatus<Theme> Update(Theme theme)
+        {
+            var status = new MethodStatus<Theme>();
+            try
+            {
+                //var themeManager = new ArgosyManager<ESM_THEME>();
+                //var themeOptionManager = new ArgosyManager<ESM_THEME_OPTION>();
+                //var themeStyleManager = new ArgosyManager<ESM_THEME_STYLE>();
+                var companyId = FrontEndSession.Instance.CompanyId.GetValueOrDefault(0);
+                var sessionThemeId = 1;
+                var companyThemeId = 1;
+                //themeManager.Update(t =>
+                //{
+                //    t.HREF = theme.Href;
+                //    t.NAME = theme.Name;
+                //    t.PRIMARY_COLOR = theme.PrimaryColor;
+                //    t.SECONDARY_COLOR = theme.SecondaryColor;
+                //    t.TERTIARY_COLOR = theme.TertiaryColor;
+                //    t.STYLESHEET = theme.StyleSheet;
+                //}, t => t.THEME_ID == theme.Id);
+                //themeManager.SaveChanges();
+
+                foreach (var themeStyle in theme.ThemeStyles)
+                {
+                    //themeStyleManager.Update(ts =>
+                    //{
+                    //    ts.DISPLAY_NAME = themeStyle.DisplayName;
+                    //    ts.NAME = themeStyle.Name;
+                    //    ts.VALUE = themeStyle.Value;
+                    //    ts.SELECTOR = themeStyle.Selector;
+                    //    ts.ROLE = themeStyle.Role;
+                    //    ts.IS_PRIMARY = themeStyle.IsPrimary;
+                    //    ts.IS_SECONDARY = themeStyle.IsSecondary;
+                    //    ts.IS_TERTIARY = themeStyle.IsTertiary;
+                    //}, ts => ts.THEME_STYLE_ID == themeStyle.ThemeStyleId);
+                    //themeStyleManager.SaveChanges();
+
+                    if (themeStyle.ThemeOptions == null) continue;
+                    foreach (var themeOption in themeStyle.ThemeOptions)
+                    {
+                        //themeOptionManager.Update(to =>
+                        //{
+                        //    to.VALUE = themeOption.Value;
+                        //    to.TEXT = themeOption.Text;
+                        //    to.IS_SELECTED = themeOption.IsSelected;
+                        //}, to => to.THEME_OPTION_ID == themeOption.ThemeOptionId);
+                        //themeOptionManager.SaveChanges();
+                    }
+                }
+                theme.IsDeletable = companyThemeId != theme.Id && sessionThemeId != theme.Id && !theme.IsSystem;
+                status.Data = theme;
+            }
+            catch (Exception err)
+            {
+                //status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Update " + TypeName + " Exception", theme);
+                status.ErrorType = ErrorType.Unhandled;
+                status.IsError = true;
+                status.MessageSeverity = MessageSeverity.Error;
+                status.Message = "There was an error updating your " + "nesto" + ".  Please contact support.";
+            }
+            return status;
+        }
+
+        public new MethodStatus<Theme> Delete(Theme theme)
+        {
+            var status = new MethodStatus<Theme>();
+            var company = new ESM_COMPANY() { COMPANY_ID = 1,THEME_ID = 1};
+            if (!theme.IsDeletable)
+            {
+                if (company != null && company.THEME_ID == theme.Id)
+                {
+                    status.Message = "~{msgStandardThemesCanNotBeDeleted}~";
+                    status.IsError = true;
+                    return status;
+                }
+                if (theme.IsSystem)
+                {
+                    status.Message = "~{msgStandardThemesCanNotBeDeleted}~";
+                    status.IsError = true;
+                    return status;
+                }
+                if (int.Parse(FrontEndSession.Instance.ThemeId) == theme.Id)
+                {
+                    status.Message = "~{msgSessionThemeCanNotBeDeleted}~";
+                    status.IsError = true;
+                    return status;
+                }
+            }
+            try
+            {
+                //var themeManager = new ArgosyManager<ESM_THEME>();
+                //var themeStyleManager = new ArgosyManager<ESM_THEME_STYLE>();
+                //var themeOptionManager = new ArgosyManager<ESM_THEME_OPTION>();
+
+                foreach (var themeStyle in theme.ThemeStyles)
+                {
+                    if (themeStyle.ThemeOptions != null)
+                    {
+                        foreach (var themeOption in themeStyle.ThemeOptions)
+                        {
+                            //var esmThemeOption = themeOptionManager.FirstOrDefault(to => to.THEME_OPTION_ID == themeOption.ThemeOptionId);
+                            //themeOptionManager.Delete(esmThemeOption);
+                            //themeOptionManager.SaveChanges();
+                        }
+                    }
+                    //var esmThemeStyle = themeStyleManager.FirstOrDefault(ts => ts.THEME_STYLE_ID == themeStyle.ThemeStyleId);
+                    //themeStyleManager.Delete(esmThemeStyle);
+                    //themeStyleManager.SaveChanges();
+                }
+                var esmTheme = 1;
+                //themeManager.Delete(esmTheme);
+                //themeManager.SaveChanges();
+                status.Data = theme;
+                status.IsError = false;
+                status.Message = "~{msgThemeDeleted}~";
+            }
+            catch (Exception err)
+            {
+                //status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Delete " + TypeName + " Exception", theme);
+                status.ErrorType = ErrorType.Unhandled;
+                status.IsError = true;
+                status.MessageSeverity = MessageSeverity.Error;
+                status.Message = "There was an error deleting your " + "Nesto" + ".  Please contact support.";
+            }
+            return status;
+        }
     }
     //public class ThemeManager : AbstractFrontEndManager<ThemeManager.Theme, ESM_THEME, ThemeManager.ThemeEnum, ThemeManager.ThemeSearch>
     //{
@@ -182,7 +389,7 @@ namespace Argosy.BusinessLogic.FrontEnd.Managers
     //            PRIMARY_COLOR = theme.PrimaryColor,
     //            SECONDARY_COLOR = theme.SecondaryColor,
     //            TERTIARY_COLOR = theme.TertiaryColor
-               
+
     //        };
     //        //themeManager.Add(esmTheme);
     //        //themeManager.SaveChanges();
@@ -245,265 +452,265 @@ namespace Argosy.BusinessLogic.FrontEnd.Managers
     //    return status;
     //}
 
-    //    public new MethodStatus<Theme> Update(Theme theme)
-    //    {
-    //        var status = new MethodStatus<Theme>();
-    //        try
-    //        {
-    //            var themeManager = new ArgosyManager<ESM_THEME>();
-    //            var themeOptionManager = new ArgosyManager<ESM_THEME_OPTION>();
-    //            var themeStyleManager = new ArgosyManager<ESM_THEME_STYLE>();
-    //            var companyId = FrontEndSession.Instance.CompanyId.GetValueOrDefault(0);
-    //            var sessionThemeId = FrontEndSession.Instance.UserSettings?.ThemeId;
-    //            var companyThemeId = new ArgosyManager<ESM_COMPANY>().FirstOrDefault(c => c.COMPANY_ID == companyId).THEME_ID;
-    //            themeManager.Update(t =>
-    //            {
-    //                t.HREF = theme.Href;
-    //                t.NAME = theme.Name;
-    //                t.PRIMARY_COLOR = theme.PrimaryColor;
-    //                t.SECONDARY_COLOR = theme.SecondaryColor;
-    //                t.TERTIARY_COLOR = theme.TertiaryColor;
-    //                t.STYLESHEET = theme.StyleSheet;
-    //            }, t => t.THEME_ID == theme.Id);
-    //            themeManager.SaveChanges();
+        //    public new MethodStatus<Theme> Update(Theme theme)
+        //    {
+        //        var status = new MethodStatus<Theme>();
+        //        try
+        //        {
+        //            var themeManager = new ArgosyManager<ESM_THEME>();
+        //            var themeOptionManager = new ArgosyManager<ESM_THEME_OPTION>();
+        //            var themeStyleManager = new ArgosyManager<ESM_THEME_STYLE>();
+        //            var companyId = FrontEndSession.Instance.CompanyId.GetValueOrDefault(0);
+        //            var sessionThemeId = FrontEndSession.Instance.UserSettings?.ThemeId;
+        //            var companyThemeId = new ArgosyManager<ESM_COMPANY>().FirstOrDefault(c => c.COMPANY_ID == companyId).THEME_ID;
+        //            themeManager.Update(t =>
+        //            {
+        //                t.HREF = theme.Href;
+        //                t.NAME = theme.Name;
+        //                t.PRIMARY_COLOR = theme.PrimaryColor;
+        //                t.SECONDARY_COLOR = theme.SecondaryColor;
+        //                t.TERTIARY_COLOR = theme.TertiaryColor;
+        //                t.STYLESHEET = theme.StyleSheet;
+        //            }, t => t.THEME_ID == theme.Id);
+        //            themeManager.SaveChanges();
 
-    //            foreach (var themeStyle in theme.ThemeStyles)
-    //            {
-    //                themeStyleManager.Update(ts =>
-    //                {
-    //                    ts.DISPLAY_NAME = themeStyle.DisplayName;
-    //                    ts.NAME = themeStyle.Name;
-    //                    ts.VALUE = themeStyle.Value;
-    //                    ts.SELECTOR = themeStyle.Selector;
-    //                    ts.ROLE = themeStyle.Role;
-    //                    ts.IS_PRIMARY = themeStyle.IsPrimary;
-    //                    ts.IS_SECONDARY = themeStyle.IsSecondary;
-    //                    ts.IS_TERTIARY = themeStyle.IsTertiary;
-    //                }, ts => ts.THEME_STYLE_ID == themeStyle.ThemeStyleId);
-    //                themeStyleManager.SaveChanges();
+        //            foreach (var themeStyle in theme.ThemeStyles)
+        //            {
+        //                themeStyleManager.Update(ts =>
+        //                {
+        //                    ts.DISPLAY_NAME = themeStyle.DisplayName;
+        //                    ts.NAME = themeStyle.Name;
+        //                    ts.VALUE = themeStyle.Value;
+        //                    ts.SELECTOR = themeStyle.Selector;
+        //                    ts.ROLE = themeStyle.Role;
+        //                    ts.IS_PRIMARY = themeStyle.IsPrimary;
+        //                    ts.IS_SECONDARY = themeStyle.IsSecondary;
+        //                    ts.IS_TERTIARY = themeStyle.IsTertiary;
+        //                }, ts => ts.THEME_STYLE_ID == themeStyle.ThemeStyleId);
+        //                themeStyleManager.SaveChanges();
 
-    //                if (themeStyle.ThemeOptions == null) continue;
-    //                foreach (var themeOption in themeStyle.ThemeOptions)
-    //                {
-    //                    themeOptionManager.Update(to =>
-    //                    {
-    //                        to.VALUE = themeOption.Value;
-    //                        to.TEXT = themeOption.Text;
-    //                        to.IS_SELECTED = themeOption.IsSelected;
-    //                    }, to => to.THEME_OPTION_ID == themeOption.ThemeOptionId);
-    //                    themeOptionManager.SaveChanges();
-    //                }
-    //            }
-    //            theme.IsDeletable = companyThemeId != theme.Id && sessionThemeId != theme.Id && !theme.IsSystem;
-    //            status.Data = theme;
-    //        }
-    //        catch (Exception err)
-    //        {
-    //            status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Update " + TypeName + " Exception", theme);
-    //            status.ErrorType = ErrorType.Unhandled;
-    //            status.IsError = true;
-    //            status.MessageSeverity = MessageSeverity.Error;
-    //            status.Message = "There was an error updating your " + TypeName + ".  Please contact support.";
-    //        }
-    //        return status;
-    //    }
+        //                if (themeStyle.ThemeOptions == null) continue;
+        //                foreach (var themeOption in themeStyle.ThemeOptions)
+        //                {
+        //                    themeOptionManager.Update(to =>
+        //                    {
+        //                        to.VALUE = themeOption.Value;
+        //                        to.TEXT = themeOption.Text;
+        //                        to.IS_SELECTED = themeOption.IsSelected;
+        //                    }, to => to.THEME_OPTION_ID == themeOption.ThemeOptionId);
+        //                    themeOptionManager.SaveChanges();
+        //                }
+        //            }
+        //            theme.IsDeletable = companyThemeId != theme.Id && sessionThemeId != theme.Id && !theme.IsSystem;
+        //            status.Data = theme;
+        //        }
+        //        catch (Exception err)
+        //        {
+        //            status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Update " + TypeName + " Exception", theme);
+        //            status.ErrorType = ErrorType.Unhandled;
+        //            status.IsError = true;
+        //            status.MessageSeverity = MessageSeverity.Error;
+        //            status.Message = "There was an error updating your " + TypeName + ".  Please contact support.";
+        //        }
+        //        return status;
+        //    }
 
-    /// <summary>
-    /// Izmenjeni create
-    /// </summary>
-    //public new MethodStatus<Theme> Create(Theme theme)
-    //{
-    //    var status = new MethodStatus<Theme>();
-    //    try
-    //    {
-    //        var companyId = 1;
-    //        var siteId = 1;
-    //        var sessionThemeId = 1;
-    //        var companyThemeId = 1;
-    //        var esmTheme = new ESM_THEME
-    //        {
-    //            GROUP_NAME = "Created Themes",
-    //            IS_DEFAULT = false,
-    //            IS_SYSTEM = false,
-    //            DATE_CREATED = DateTime.Now,
-    //            //COMPANY_ID = companyId,
-    //            //SITE_ID = siteId,
-    //            COMPANY_ID = 1,
-    //            SITE_ID = 1,
-    //            THEME_STRUCTURE_ID = theme.ThemeStructureId,
-    //            HREF = theme.Href,
-    //            NAME = theme.Name,
-    //            STYLESHEET = theme.StyleSheet,
-    //            PRIMARY_COLOR = theme.PrimaryColor,
-    //            SECONDARY_COLOR = theme.SecondaryColor,
-    //            TERTIARY_COLOR = theme.TertiaryColor
-    //        };
+        /// <summary>
+        /// Izmenjeni create
+        /// </summary>
+        //public new MethodStatus<Theme> Create(Theme theme)
+        //{
+        //    var status = new MethodStatus<Theme>();
+        //    try
+        //    {
+        //        var companyId = 1;
+        //        var siteId = 1;
+        //        var sessionThemeId = 1;
+        //        var companyThemeId = 1;
+        //        var esmTheme = new ESM_THEME
+        //        {
+        //            GROUP_NAME = "Created Themes",
+        //            IS_DEFAULT = false,
+        //            IS_SYSTEM = false,
+        //            DATE_CREATED = DateTime.Now,
+        //            //COMPANY_ID = companyId,
+        //            //SITE_ID = siteId,
+        //            COMPANY_ID = 1,
+        //            SITE_ID = 1,
+        //            THEME_STRUCTURE_ID = theme.ThemeStructureId,
+        //            HREF = theme.Href,
+        //            NAME = theme.Name,
+        //            STYLESHEET = theme.StyleSheet,
+        //            PRIMARY_COLOR = theme.PrimaryColor,
+        //            SECONDARY_COLOR = theme.SecondaryColor,
+        //            TERTIARY_COLOR = theme.TertiaryColor
+        //        };
 
-    //        foreach (var themeStyle in theme.ThemeStyles)
-    //        {
-    //            var esmThemeStyle = new ESM_THEME_STYLE
-    //            {
-    //                THEME_ID = esmTheme.THEME_ID,
-    //                THEME_GROUP_ID = themeStyle.ThemeGroupId,
-    //                DISPLAY_NAME = themeStyle.DisplayName,
-    //                NAME = themeStyle.Name,
-    //                SELECTOR = themeStyle.Selector,
-    //                ROLE = themeStyle.Role,
-    //                IS_PRIMARY = themeStyle.IsPrimary,
-    //                IS_SECONDARY = themeStyle.IsSecondary,
-    //                IS_TERTIARY = themeStyle.IsTertiary
-    //            };
-    //            if (themeStyle.DisplayName.Equals("Body Background Image") && !themeStyle.Value.Equals("none"))
-    //            {
-    //                var backgroundImageValue = themeStyle.Value.Replace("url(", string.Empty).Replace(")", string.Empty);
-    //                //var backgroundImageUrl = GetBackgroundImageUrl(backgroundImageValue);
-    //                var backgroundImageUrl = "http://www.duosasinos.com/images/duos-asinos.png";
-    //                esmThemeStyle.VALUE = string.IsNullOrEmpty(backgroundImageUrl)
-    //                                        ? "none"
-    //                                        : $"url({backgroundImageUrl})";
-    //            }
-    //            else
-    //            {
-    //                esmThemeStyle.VALUE = themeStyle.Value;
-    //            }
+        //        foreach (var themeStyle in theme.ThemeStyles)
+        //        {
+        //            var esmThemeStyle = new ESM_THEME_STYLE
+        //            {
+        //                THEME_ID = esmTheme.THEME_ID,
+        //                THEME_GROUP_ID = themeStyle.ThemeGroupId,
+        //                DISPLAY_NAME = themeStyle.DisplayName,
+        //                NAME = themeStyle.Name,
+        //                SELECTOR = themeStyle.Selector,
+        //                ROLE = themeStyle.Role,
+        //                IS_PRIMARY = themeStyle.IsPrimary,
+        //                IS_SECONDARY = themeStyle.IsSecondary,
+        //                IS_TERTIARY = themeStyle.IsTertiary
+        //            };
+        //            if (themeStyle.DisplayName.Equals("Body Background Image") && !themeStyle.Value.Equals("none"))
+        //            {
+        //                var backgroundImageValue = themeStyle.Value.Replace("url(", string.Empty).Replace(")", string.Empty);
+        //                //var backgroundImageUrl = GetBackgroundImageUrl(backgroundImageValue);
+        //                var backgroundImageUrl = "http://www.duosasinos.com/images/duos-asinos.png";
+        //                esmThemeStyle.VALUE = string.IsNullOrEmpty(backgroundImageUrl)
+        //                                        ? "none"
+        //                                        : $"url({backgroundImageUrl})";
+        //            }
+        //            else
+        //            {
+        //                esmThemeStyle.VALUE = themeStyle.Value;
+        //            }
 
-    //            if (themeStyle.ThemeOptions == null) continue;
-    //            //foreach (var themeOption in themeStyle.ThemeOptions)
-    //            //{
-    //            //    themeOptionManager.Add(new ESM_THEME_OPTION
-    //            //    {
-    //            //        THEME_STYLE_ID = esmThemeStyle.THEME_STYLE_ID,
-    //            //        VALUE = themeOption.Value,
-    //            //        TEXT = themeOption.Text,
-    //            //        IS_SELECTED = themeOption.IsSelected
-    //            //    });
-    //            //}zakomentiro
-    //        }
-    //       // theme = AutoMapper.Mapper.Map<ESM_THEME, Theme>(esmTheme);zakomentro
-    //        theme.IsDeletable = companyThemeId != theme.Id && sessionThemeId != theme.Id && !theme.IsSystem;
-    //        status.Data = theme;
-    //    }
-    //    catch (Exception err)
-    //    {
-    //       // status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Create " + TypeName + " Exception", theme);
-    //        status.ErrorType = ErrorType.Unhandled;
-    //        status.IsError = true;
-    //        status.MessageSeverity = MessageSeverity.Error;
-    //       // status.Message = "There was an error creating your " + TypeName + ".  Please contact support.";
-    //    }
-    //    return status;
-    //}
+        //            if (themeStyle.ThemeOptions == null) continue;
+        //            //foreach (var themeOption in themeStyle.ThemeOptions)
+        //            //{
+        //            //    themeOptionManager.Add(new ESM_THEME_OPTION
+        //            //    {
+        //            //        THEME_STYLE_ID = esmThemeStyle.THEME_STYLE_ID,
+        //            //        VALUE = themeOption.Value,
+        //            //        TEXT = themeOption.Text,
+        //            //        IS_SELECTED = themeOption.IsSelected
+        //            //    });
+        //            //}zakomentiro
+        //        }
+        //       // theme = AutoMapper.Mapper.Map<ESM_THEME, Theme>(esmTheme);zakomentro
+        //        theme.IsDeletable = companyThemeId != theme.Id && sessionThemeId != theme.Id && !theme.IsSystem;
+        //        status.Data = theme;
+        //    }
+        //    catch (Exception err)
+        //    {
+        //       // status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Create " + TypeName + " Exception", theme);
+        //        status.ErrorType = ErrorType.Unhandled;
+        //        status.IsError = true;
+        //        status.MessageSeverity = MessageSeverity.Error;
+        //       // status.Message = "There was an error creating your " + TypeName + ".  Please contact support.";
+        //    }
+        //    return status;
+        //}
 
 
 
-    //    public new MethodStatus<Theme> Delete(Theme theme)
-    //    {
-    //        var status = new MethodStatus<Theme>();
-    //        var company = new ArgosyManager<ESM_COMPANY>().FirstOrDefault(c => c.COMPANY_ID == theme.CompanyId);
-    //        if (!theme.IsDeletable)
-    //        {
-    //            if (company != null && company.THEME_ID == theme.Id)
-    //            {
-    //                status.Message = "~{msgStandardThemesCanNotBeDeleted}~";
-    //                status.IsError = true;
-    //                return status;
-    //            }
-    //            if (theme.IsSystem)
-    //            {
-    //                status.Message = "~{msgStandardThemesCanNotBeDeleted}~";
-    //                status.IsError = true;
-    //                return status;
-    //            }
-    //            if (int.Parse(FrontEndSession.Instance.ThemeId) == theme.Id)
-    //            {
-    //                status.Message = "~{msgSessionThemeCanNotBeDeleted}~";
-    //                status.IsError = true;
-    //                return status;
-    //            }
-    //        }
-    //        try
-    //        {
-    //            var themeManager = new ArgosyManager<ESM_THEME>();
-    //            var themeStyleManager = new ArgosyManager<ESM_THEME_STYLE>();
-    //            var themeOptionManager = new ArgosyManager<ESM_THEME_OPTION>();
+        //    public new MethodStatus<Theme> Delete(Theme theme)
+        //    {
+        //        var status = new MethodStatus<Theme>();
+        //        var company = new ArgosyManager<ESM_COMPANY>().FirstOrDefault(c => c.COMPANY_ID == theme.CompanyId);
+        //        if (!theme.IsDeletable)
+        //        {
+        //            if (company != null && company.THEME_ID == theme.Id)
+        //            {
+        //                status.Message = "~{msgStandardThemesCanNotBeDeleted}~";
+        //                status.IsError = true;
+        //                return status;
+        //            }
+        //            if (theme.IsSystem)
+        //            {
+        //                status.Message = "~{msgStandardThemesCanNotBeDeleted}~";
+        //                status.IsError = true;
+        //                return status;
+        //            }
+        //            if (int.Parse(FrontEndSession.Instance.ThemeId) == theme.Id)
+        //            {
+        //                status.Message = "~{msgSessionThemeCanNotBeDeleted}~";
+        //                status.IsError = true;
+        //                return status;
+        //            }
+        //        }
+        //        try
+        //        {
+        //            var themeManager = new ArgosyManager<ESM_THEME>();
+        //            var themeStyleManager = new ArgosyManager<ESM_THEME_STYLE>();
+        //            var themeOptionManager = new ArgosyManager<ESM_THEME_OPTION>();
 
-    //            foreach (var themeStyle in theme.ThemeStyles)
-    //            {
-    //                if (themeStyle.ThemeOptions != null)
-    //                {
-    //                    foreach (var themeOption in themeStyle.ThemeOptions)
-    //                    {
-    //                        var esmThemeOption = themeOptionManager.FirstOrDefault(to => to.THEME_OPTION_ID == themeOption.ThemeOptionId);
-    //                        themeOptionManager.Delete(esmThemeOption);
-    //                        themeOptionManager.SaveChanges();
-    //                    }
-    //                }
-    //                var esmThemeStyle = themeStyleManager.FirstOrDefault(ts => ts.THEME_STYLE_ID == themeStyle.ThemeStyleId);
-    //                themeStyleManager.Delete(esmThemeStyle);
-    //                themeStyleManager.SaveChanges();
-    //            }
-    //            var esmTheme = themeManager.FirstOrDefault(t => t.THEME_ID == theme.Id);
-    //            themeManager.Delete(esmTheme);
-    //            themeManager.SaveChanges();
-    //            status.Data = theme;
-    //            status.IsError = false;
-    //            status.Message = "~{msgThemeDeleted}~";
-    //        }
-    //        catch (Exception err)
-    //        {
-    //            status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Delete " + TypeName + " Exception", theme);
-    //            status.ErrorType = ErrorType.Unhandled;
-    //            status.IsError = true;
-    //            status.MessageSeverity = MessageSeverity.Error;
-    //            status.Message = "There was an error deleting your " + TypeName + ".  Please contact support.";
-    //        }
-    //        return status;
-    //    }
+        //            foreach (var themeStyle in theme.ThemeStyles)
+        //            {
+        //                if (themeStyle.ThemeOptions != null)
+        //                {
+        //                    foreach (var themeOption in themeStyle.ThemeOptions)
+        //                    {
+        //                        var esmThemeOption = themeOptionManager.FirstOrDefault(to => to.THEME_OPTION_ID == themeOption.ThemeOptionId);
+        //                        themeOptionManager.Delete(esmThemeOption);
+        //                        themeOptionManager.SaveChanges();
+        //                    }
+        //                }
+        //                var esmThemeStyle = themeStyleManager.FirstOrDefault(ts => ts.THEME_STYLE_ID == themeStyle.ThemeStyleId);
+        //                themeStyleManager.Delete(esmThemeStyle);
+        //                themeStyleManager.SaveChanges();
+        //            }
+        //            var esmTheme = themeManager.FirstOrDefault(t => t.THEME_ID == theme.Id);
+        //            themeManager.Delete(esmTheme);
+        //            themeManager.SaveChanges();
+        //            status.Data = theme;
+        //            status.IsError = false;
+        //            status.Message = "~{msgThemeDeleted}~";
+        //        }
+        //        catch (Exception err)
+        //        {
+        //            status.ErrorCode = Cerqa.Common.V5.ErrorHandling.ErrorHandlingRepositoryFactory.Instance.HandleError(err, "Delete " + TypeName + " Exception", theme);
+        //            status.ErrorType = ErrorType.Unhandled;
+        //            status.IsError = true;
+        //            status.MessageSeverity = MessageSeverity.Error;
+        //            status.Message = "There was an error deleting your " + TypeName + ".  Please contact support.";
+        //        }
+        //        return status;
+        //    }
 
-    //private static string GetBackgroundImageUrl(string backgroundImageUrl)
-    //{
-    //    if (string.IsNullOrEmpty(backgroundImageUrl)) return string.Empty;
-    //    var backgroundImageFile = FileFactory.GetInstance(new Uri(backgroundImageUrl));
-    //    var backgroundImageUploadFileLocation = FileFactory.GetInstance(FileLocations.CustomerLogo, backgroundImageFile.Name, null, FrontEndSession.Instance.CompanyId);
-    //    backgroundImageFile.CopyTo(backgroundImageUploadFileLocation);
-    //    backgroundImageUrl = backgroundImageUploadFileLocation.Uri.AbsoluteUri;
-    //    return backgroundImageUrl;
-    //}
+        //private static string GetBackgroundImageUrl(string backgroundImageUrl)
+        //{
+        //    if (string.IsNullOrEmpty(backgroundImageUrl)) return string.Empty;
+        //    var backgroundImageFile = FileFactory.GetInstance(new Uri(backgroundImageUrl));
+        //    var backgroundImageUploadFileLocation = FileFactory.GetInstance(FileLocations.CustomerLogo, backgroundImageFile.Name, null, FrontEndSession.Instance.CompanyId);
+        //    backgroundImageFile.CopyTo(backgroundImageUploadFileLocation);
+        //    backgroundImageUrl = backgroundImageUploadFileLocation.Uri.AbsoluteUri;
+        //    return backgroundImageUrl;
+        //}
 
-    //public static ThemesViewModel GetViewModel()
-    //{
-    //    var companyId = FrontEndSession.Instance.CompanyId.GetValueOrDefault(0);
-    //    var sessionThemeId = FrontEndSession.Instance.UserSettings?.ThemeId;
-    //    var result = new ThemesViewModel();
-    //    var themes = new ArgosyManager<ESM_THEME>().Find(x => x.IS_SYSTEM || x.COMPANY_ID == companyId).ToList();
-    //    if (!themes.Any()) return result;
-    //    {
-    //        result = AutoMapper.Mapper.Map<List<ESM_THEME>, ThemesViewModel>(themes);
-    //        var currentThemeInfo = sessionThemeId != null
-    //            ? themes.FirstOrDefault(x => x.THEME_ID == sessionThemeId)
-    //            : themes.FirstOrDefault(x => x.THEME_ID == 1);
-    //        if (currentThemeInfo != null)
-    //        {
-    //            SetThemeIdAndName(currentThemeInfo, result);
-    //        }
-    //    }
-    //    return result;
-    //}
+        //public static ThemesViewModel GetViewModel()
+        //{
+        //    var companyId = FrontEndSession.Instance.CompanyId.GetValueOrDefault(0);
+        //    var sessionThemeId = FrontEndSession.Instance.UserSettings?.ThemeId;
+        //    var result = new ThemesViewModel();
+        //    var themes = new ArgosyManager<ESM_THEME>().Find(x => x.IS_SYSTEM || x.COMPANY_ID == companyId).ToList();
+        //    if (!themes.Any()) return result;
+        //    {
+        //        result = AutoMapper.Mapper.Map<List<ESM_THEME>, ThemesViewModel>(themes);
+        //        var currentThemeInfo = sessionThemeId != null
+        //            ? themes.FirstOrDefault(x => x.THEME_ID == sessionThemeId)
+        //            : themes.FirstOrDefault(x => x.THEME_ID == 1);
+        //        if (currentThemeInfo != null)
+        //        {
+        //            SetThemeIdAndName(currentThemeInfo, result);
+        //        }
+        //    }
+        //    return result;
+        //}
 
-    //private static void SetThemeIdAndName(ESM_THEME currentThemeInfo, ThemesViewModel result)
-    //{
-    //    if (currentThemeInfo == null) return;
+        //private static void SetThemeIdAndName(ESM_THEME currentThemeInfo, ThemesViewModel result)
+        //{
+        //    if (currentThemeInfo == null) return;
 
-    //    result.CurrentThemeId = currentThemeInfo.THEME_ID;
-    //    result.CurrentThemeName = currentThemeInfo.NAME;
-    //}
+        //    result.CurrentThemeId = currentThemeInfo.THEME_ID;
+        //    result.CurrentThemeName = currentThemeInfo.NAME;
+        //}
 
-    //public class ThemesViewModel
-    //{
-    //    public string CurrentThemeName;
-    //    public int CurrentThemeId;
-    //    public List<ThemeGrouping> ThemeGroupings;
-    //}
+        //public class ThemesViewModel
+        //{
+        //    public string CurrentThemeName;
+        //    public int CurrentThemeId;
+        //    public List<ThemeGrouping> ThemeGroupings;
+        //}
 
     public class ThemeGrouping
         {

@@ -21,14 +21,14 @@ namespace Luka.Areas.Admin
         //[AdminOnly]
         public ActionResult Index(string id)
         {
-
+            int currentTheme = id != null && id != String.Empty ? Convert.ToInt32(id) : 1;
             //ViewBag.Navigation = new List<NavigationAction>();
             ViewBag.ActionLinks = new List<NavigationAction>();
             //return View();
             ViewBag.Navigation = new List<NavigationAction>();
             //var viewModel = ThemeManager.GetViewModel();
             var viewModel = new ThemesViewModel();
-            viewModel.CurrentThemeId = 1;
+            viewModel.CurrentThemeId = currentTheme;
             viewModel.CurrentThemeName = "My Admin theme";
             viewModel.ThemeGroupings = new List<ThemeGrouping>();
 
@@ -55,45 +55,10 @@ namespace Luka.Areas.Admin
             return View(viewModel);
         }
         [HttpPost]
-        //[AdminOnly]
-        //public ActionResult Create(ThemeManager.Theme theme)
-        public ActionResult Create()
+        public ActionResult Create(Theme theme)
         {
-
-            //var response = new ThemeManager().Create(theme);
-            var listaStilova = new List<ThemeStyle>();
-            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 333, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor",Value= "#752d3c" });
-            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 334, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#734d3c" });
-            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 335, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#712d3c" });
-            var response = new Theme()
-            {
-                CompanyId = 1,
-                GroupName="Created Themes",
-                DateCreated=DateTime.Now,
-                Href=null,
-                IsDefault=false,
-                IsDeletable=true,
-                IsSystem=false,
-                Name="Proba",
-                PrimaryColor= "#752d3c",
-                SecondaryColor= "#666666",
-                SiteId=35,
-                StyleSheet= null,
-                TertiaryColor= "#752d3c",
-                ThemeStructure=null,
-                ThemeStructureId=1,
-                ThemeStyles=listaStilova,
-                Id=475
-
-
-            };
-            //var lista = new List<Theme>();
-
-            
-            //lista.Add(response);
+            var response = new ThemeManager().Create(theme);
             return Json(response, JsonRequestBehavior.AllowGet);
-            
-            //nedovrseno
         }
         //[HttpPost]
 
@@ -114,58 +79,34 @@ namespace Luka.Areas.Admin
         //    var response = new ThemeManager().Update(theme);
         //    return Json(response);
         //}
-        public ActionResult Update()
+        public ActionResult Update(Theme theme)
         {
-            var listaStilova = new List<ThemeStyle>();
-            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 333, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#752d3c" });
-            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 334, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#734d3c" });
-            listaStilova.Add(new ThemeStyle() { ThemeStyleId = 335, ThemeGroupId = 1, ThemeId = 222, DisplayName = "BackgroundColor", Value = "#712d3c" });
-            var response = new Theme()
-            {
-                CompanyId = 1,
-                GroupName = "Created Themes",
-                DateCreated = DateTime.Now,
-                Href = null,
-                IsDefault = false,
-                IsDeletable = true,
-                IsSystem = false,
-                Name = "Proba",
-                PrimaryColor = "#752d3c",
-                SecondaryColor = "#666666",
-                SiteId = 35,
-                StyleSheet = null,
-                TertiaryColor = "#752d3c",
-                ThemeStructure = null,
-                ThemeStructureId = 1,
-                ThemeStyles = listaStilova,
-                //Id = 475
-
-
-            };
-            return Json(response, JsonRequestBehavior.AllowGet);
+            var response = new ThemeManager().Update(theme);
+            return Json(response);
         }
         //[AdminOnly]
         //public ActionResult Delete(ThemeManager.Theme theme)
-        //{
-        //    var response = new ThemeManager().Delete(theme);
-        //    return Json(response);
+        public ActionResult Delete(Theme theme)
+        {
+            var response = new ThemeManager().Delete(theme);
+            return Json(response);
 
-        //}
+        }
 
         //public void UpdateThemeGroup(ThemeManager.ThemeGroup themeGroup)
         //{
         //}
 
-        //public void UpdateCompanyTheme(int id)
-        //{
-        //    CompanyManager.UpdateTheme(FrontEndSession.Instance.CompanyId.GetValueOrDefault(0), id);
-        //    UpdateSessionTheme(id);
-        //}
+        public void UpdateCompanyTheme(int id)
+        {
+            //CompanyManager.UpdateTheme(FrontEndSession.Instance.CompanyId.GetValueOrDefault(0), id);
+            UpdateSessionTheme(id);
+        }
 
-        //public ActionResult UpdateSessionTheme(int id)
-        //{
-        //    FrontEndSession.Instance.UpdateTheme(id);
-        //    return Json(Url.Action("Index", "Style", new { id, area = "" }));
-        //}
+        public ActionResult UpdateSessionTheme(int id)
+        {
+            FrontEndSession.Instance.UpdateTheme(id);
+            return Json(Url.Action("Index", "Style", new { id, area = "" }));
+        }
     }
 }

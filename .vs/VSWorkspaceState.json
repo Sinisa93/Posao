@@ -2,11 +2,22 @@
   "ExpandedNodes": [
     "",
     "\\Luka",
+    "\\Luka\\AdditionalContent",
+    "\\Luka\\AdditionalContent\\Areas",
+    "\\Luka\\AdditionalContent\\Areas\\Admin",
+    "\\Luka\\AdditionalContent\\Areas\\Admin\\Home",
+    "\\Luka\\AdditionalContent\\Areas\\Admin\\Theme",
+    "\\Luka\\AdditionalContent\\LayoutDependancies",
+    "\\Luka\\App_Start",
     "\\Luka\\Areas",
     "\\Luka\\Areas\\Admin",
-    "\\Luka\\Content",
-    "\\Luka\\Content\\dodato"
+    "\\Luka\\Areas\\Admin\\Views",
+    "\\Luka\\Areas\\Admin\\Views\\Pocetna",
+    "\\Luka\\Controllers",
+    "\\Luka\\Controllers\\JSON",
+    "\\Luka\\Scripts",
+    "\\Luka\\Scripts\\controls"
   ],
-  "SelectedNode": "\\Luka",
+  "SelectedNode": "\\Luka\\App_Start\\RouteConfig.cs",
   "PreviewInSolutionExplorer": false
 }

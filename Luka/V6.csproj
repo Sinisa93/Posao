@@ -321,6 +321,7 @@
     <Content Include="Scripts\ControlLoader.js" />
     <Content Include="Scripts\controls.min.js" />
     <Content Include="Scripts\controls\Message.js" />
+    <Content Include="Scripts\controls\templates\Theme.html" />
     <Content Include="Scripts\controls\Theme.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
