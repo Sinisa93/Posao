@@ -1,0 +1,25 @@
+﻿@using Argosy.Web.FrontEnd.Models
+@using Argosy.BusinessLogic.FrontEnd.Security;
+@model Argosy.BusinessLogic.FrontEnd.Managers.ConsumerManager.Consumer
+@{
+    ViewBag.Title = "~{AddNewConsumer}~";
+
+    ViewBag.Navigation.Add(new NavigationAction() { Name = "~{AddNewConsumer}~", InnerClass = "active" });
+    ViewBag.ActionLinks.Add(new NavigationAction() { Name = " ~{Save}~", InnerClass = "fa fa-save defaultButton", OuterClass = "btn btn-success ", JavaScript = "addConsumer();" });
+    Model.CompanyUserId = FrontEndSession.Instance.UserId.GetValueOrDefault();
+}
+<section class="extra">
+    <div class="container">
+        <div class="row">
+            <div id="consumerTarget">
+                @using (Html.BeginForm("Add", "Consumers", FormMethod.Post, new { role = "form", @class = "add-consumer" }))
+                {
+                    @Html.Partial("Partials/_ConsumerDetails")
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">function addConsumer() {
+		$("form.add-consumer")[0].submit();
+    };</script>

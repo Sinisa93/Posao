@@ -16,6 +16,7 @@ namespace Luka
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            GlobalFilters.Filters.Add(new GlobalViewFilter(), 0);
         }
     }
 }

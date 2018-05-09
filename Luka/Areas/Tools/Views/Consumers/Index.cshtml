@@ -1,0 +1,14 @@
+﻿@using Argosy.Web.FrontEnd.Models
+@{
+    ViewBag.Navigation.Add(new NavigationAction() { Name = "~{ConsumerMaintenance}~", InnerClass = "Active" });
+    ViewBag.ActionLinks.Add(new NavigationAction() { Name = " ~{AddConsumer}~", Action = "Add", Controller = "Consumers", InnerClass = "fa fa-plus", OuterClass = "btn btn-success" });
+}
+<section class="extra">
+    <div class="container">
+        <div class="row">
+            <div id="mainpanel" class="col-sm-12 bottommargin">
+                <div data-argosy-view="ConsumerGridview" data-argosy-control="ConsumerGridview"></div>
+            </div>
+        </div>
+    </div>
+</section>

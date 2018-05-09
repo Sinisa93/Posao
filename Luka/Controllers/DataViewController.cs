@@ -84,5 +84,12 @@ namespace Luka.Controllers
             return Json(results, JsonRequestBehavior.AllowGet);
         }
 
+        [AllowAnonymous]
+        public ActionResult GetConsumers()
+        {
+            //Query string: ?ShowUserOrdersOnly=true&IsIndex=true&Page=1&PageSize=50&Skip=0&Take=50&Username=&Keyword=&OrderTag=&OrderNumber=&ProofName=&StatusId=Open&OrderDateStart=&OrderDateEnd=&UserGroup=&UserId=&PartName=&SKU=&PurchaseOrderNumber=&Custom01=&Country=&State=&City=&Zip=&Phone=&_=1524217889148
+            var results = JsonToObject.Convert("GetConsumers.json");
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -1,0 +1,26 @@
+﻿@using Argosy.Web.FrontEnd.Models
+@model Argosy.BusinessLogic.FrontEnd.Managers.ConsumerManager.Consumer
+@{
+    ViewBag.Title = "~{ConsumerDetails}~";
+    ViewBag.Navigation.Add(new NavigationAction() { Name = "~{ConsumerMaintenance}~", Action = "Index", Controller = "Consumers", InnerClass = "Active" });
+    ViewBag.Navigation.Add(new NavigationAction() { Name = "~{ConsumerDetails}~", InnerClass = "Active" });
+    ViewBag.ActionLinks.Add(new NavigationAction() { Name = " ~{Save}~", InnerClass = "fa fa-save", OuterClass = "btn btn-success", JavaScript = "editConsumer();" });
+}
+<section class="extra">
+    <div class="container">
+        <div class="row">
+            <div id="consumerTarget">
+                @using (Html.BeginForm("Edit", "Consumers", FormMethod.Post, new { role = "form", @class = "edit-consumer" }))
+                {
+                    @Html.Partial("Partials/_ConsumerDetails")
+                }
+            </div>
+            <div class="col-lg-4 borderl maru20 floatr">
+                <div data-argosy-control="ConsumerOrdersGridView" data-argosy-view="ConsumerOrdersGridView" data-argosy-options-consumer-id="@Model.ConsumerId"> </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">function editConsumer() {
+        $("form.edit-consumer")[0].submit();
+    };</script>
