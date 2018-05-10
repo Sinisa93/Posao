@@ -1,0 +1,18 @@
+﻿@model int?
+<div>
+    <div class="label-style">
+        <label for="@ViewData.ModelMetadata.PropertyName">@ViewData.ModelMetadata.GetDisplayName()</label>
+        @if (ViewData.ModelMetadata.IsRequired)
+        {
+            <b class="co-warning">*</b>
+        }
+    </div>
+    <div class="input-style maru5">
+        <select data-argosy-control="GlobalConsumerTypeDropDown" data-argosy-options-consumer-type-id="@ViewData.Model" data-argosy-options-hidden-field-name="@ViewData.ModelMetadata.PropertyName" data-argosy-view="GlobalConsumerTypeDropDown"></select>
+        <input data-val="true" id="@ViewData.ModelMetadata.PropertyName" name="@ViewData.ModelMetadata.PropertyName" type="hidden" value="@ViewData.Model">
+    </div>
+    <br style="clear: both">
+    <div class="input-validation-message-wrapper">
+        @Html.ValidationMessageFor(model => model)
+    </div>
+</div>

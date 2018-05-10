@@ -1,0 +1,40 @@
+﻿@model string
+@{
+	var consumerCompanyName = "";
+	if(ViewData.ContainsKey("consumerCompanyName"))
+	{
+		consumerCompanyName = (string)ViewData["consumerCompanyName"];
+	}
+}
+<style>
+   
+</style>
+<div>
+    <div class="label-style">
+        <label for="@ViewData.ModelMetadata.PropertyName">@ViewData.ModelMetadata.GetDisplayName()</label>
+            <b class="co-warning">*</b>
+    </div>
+    <div class="input-style maru5">
+        @(
+        Html.Kendo().AutoCompleteFor(m => m).Name("ConsumerCompanies").DataTextField("CompanyName").HtmlAttributes(new {@class="input-style"})
+        .DataSource(source => { source.Read(read => { read.Action("GetConsumerCompanies", "DataView", new { area = "" }); }); })
+        .Events(e => e.Change("changeHiddenConsumerCompanyName"))
+        )
+        <input data-val="true" id="@ViewData.ModelMetadata.PropertyName" name="@ViewData.ModelMetadata.PropertyName" type="hidden" value="@consumerCompanyName">
+       
+    </div>
+    <br style="clear: both">
+	@{ if(ViewData.ModelState.ContainsKey(ViewData.ModelMetadata.PropertyName) && ViewData.ModelState[ViewData.ModelMetadata.PropertyName].Errors.Count > 0){
+		<div id="@(ViewData.ModelMetadata.PropertyName)Error" class="input-validation-message-wrapper">
+			<span class="field-validation-error">@ViewData.ModelState[ViewData.ModelMetadata.PropertyName].Errors[0].ErrorMessage</span>
+		</div>
+	} }
+</div>
+<script type="text/javascript">
+	function changeHiddenConsumerCompanyName(e) {
+		$("#@ViewData.ModelMetadata.PropertyName").val($("#ConsumerCompanies").val());
+		if ($.trim($("#@ViewData.ModelMetadata.PropertyName").val()) !== ""){
+			$("#@(ViewData.ModelMetadata.PropertyName)Error").hide();
+		}
+	}
+</script>

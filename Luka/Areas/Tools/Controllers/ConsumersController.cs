@@ -31,6 +31,44 @@ namespace Luka.Areas.Tools.Controllers
 
         //    return consumer;
         //}
+        private ConsumerManager.Consumer SearchConsumer(int consumerId)
+        {
+            var consumer = new ConsumerManager.Consumer()
+            {
+
+                ConsumerId = consumerId,
+                ConsumerCompanyName = "Acme",
+                ConsumerFirstName = "Mika",
+                ConsumerLastName = "Mik",
+                ConsumerTypeId = 19,
+                ConsumerCompanyId = 881,
+                ConsumerType = "Contact",
+                ConsumerRole = "",
+                OperationLocation = "",
+                ConsumerPhone = "(_00) 000-0000",
+                ConsumerEmail = "sss@gmail.com",
+                IsResidentialAddress = false,
+                Custom01 = "",
+                Custom02 = "",
+                Custom03 = "",
+                Custom04 = "",
+                Custom05 = "",
+                ConsumerCity = "New York",
+                ConsumerStateId = 3370,
+                ConsumerStateCode = "CA",
+                ConsumerAddress1 = "ssss sss 1",
+                ConsumerAddress2 = "",
+                ConsumerAddress3 = "",
+                Country = "",
+                ConsumerZip = "1111111",
+                ConsumerCountry = 219,
+                ConsumerComment = "",
+                CompanyUserId = 281376,
+                LoadedInModal = false
+
+            };
+            return consumer; 
+        }
         // GET: Tools/ConsumerMaintenance
         public ActionResult Index()
         {
@@ -44,58 +82,58 @@ namespace Luka.Areas.Tools.Controllers
             var consumer = new ConsumerManager.Consumer();
             return View(consumer);
         }
-        //[HttpGet]
-        //public ActionResult Edit(int? id)
-        //{
-        //    ViewBag.ActionLinks = new List<NavigationAction>();
-        //    ViewBag.Navigation = new List<NavigationAction>();
-        //    var consumer = id == null ? new ConsumerManager.Consumer() : SearchConsumer(id.Value);
-        //    return consumer == null ? View("Index") : View(consumer);
-        //}
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            ViewBag.ActionLinks = new List<NavigationAction>();
+            ViewBag.Navigation = new List<NavigationAction>();
+            var consumer = id == null ? new ConsumerManager.Consumer() : SearchConsumer(id.Value);
+            return consumer == null ? View("Index") : View(consumer);
+        }
 
-        //[HttpPost]
-        //public ActionResult Edit(ConsumerManager.Consumer consumer)
-        //{
-        //    var updateConsumer = new MethodStatus<ConsumerManager.Consumer> { Data = consumer };
-        //    if (consumer.ConsumerCompanyId <= 0)
-        //    {
-        //        if (!consumer.ConsumerCompanyName.IsNullOrEmpty())
-        //        {
-        //            var response =
-        //                CreateConsumerCompany(new ConsumerCompanyModel
-        //                {
-        //                    CompanyName = consumer.ConsumerCompanyName.Trim()
-        //                });
-        //            if (!response.IsError)
-        //            {
-        //                consumer.ConsumerCompanyId = response.Data.ConsumerCompanyId;
-        //            }
-        //            else
-        //            {
-        //                updateConsumer.IsError = true;
-        //                updateConsumer.Message = response.Message;
-        //                ModelState.AddModelError("Consumer Company Name", response.Message);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            updateConsumer.IsError = true;
-        //            updateConsumer.Message = "Could not save consumer at this time, contact administration.";
-        //            ModelState.AddModelError("Consumer Company Name", "Company is required.");
+        [HttpPost]
+        public ActionResult Edit(ConsumerManager.Consumer consumer)
+        {
+            var updateConsumer = new MethodStatus<ConsumerManager.Consumer> { Data = consumer };
+            if (consumer.ConsumerCompanyId <= 0)
+            {
+                if (!consumer.ConsumerCompanyName.IsNullOrEmpty())
+                {
+                    var response =
+                        CreateConsumerCompany(new ConsumerCompanyModel
+                        {
+                            CompanyName = consumer.ConsumerCompanyName.Trim()
+                        });
+                    if (!response.IsError)
+                    {
+                        consumer.ConsumerCompanyId = response.Data.ConsumerCompanyId;
+                    }
+                    else
+                    {
+                        updateConsumer.IsError = true;
+                        updateConsumer.Message = response.Message;
+                        ModelState.AddModelError("Consumer Company Name", response.Message);
+                    }
+                }
+                else
+                {
+                    updateConsumer.IsError = true;
+                    updateConsumer.Message = "Could not save consumer at this time, contact administration.";
+                    ModelState.AddModelError("Consumer Company Name", "Company is required.");
 
-        //        }
-        //        if (updateConsumer.IsError)
-        //        {
-        //            return View(consumer);
-        //        }
-        //    }
-        //    if (ModelState.IsValid)
-        //    {
-        //        //updateConsumer = _consumerManager.Update(consumer);
+                }
+                if (updateConsumer.IsError)
+                {
+                    return View(consumer);
+                }
+            }
+            if (ModelState.IsValid)
+            {
+                //updateConsumer = _consumerManager.Update(consumer);
 
-        //    }
-        //    return View(consumer);
-        //}
+            }
+            return View(consumer);
+        }
 
         [HttpPost]
         public ActionResult Add(ConsumerManager.Consumer consumer)
@@ -124,8 +162,8 @@ namespace Luka.Areas.Tools.Controllers
             }
             else
             {
-                //updateConsumer.ReturnCode = ClientReturnCode.Failed;
-                //updateConsumer.Message = "Company Name is required!";
+                updateConsumer.ReturnCode = ClientReturnCode.Failed;
+                updateConsumer.Message = "Company Name is required!";
             }
             if (updateConsumer.ReturnCode == ClientReturnCode.Failed)
             {
@@ -138,16 +176,17 @@ namespace Luka.Areas.Tools.Controllers
             {
                 ViewBag.Consumer = status.Data;
                 ViewBag.Result = "Consumer Added Successfully.";
-                return RedirectToAction("Edit", new { id = status.Data.ConsumerId });
+                return RedirectToAction("Edit", new { id = status.Data.ConsumerId=1 });
+                //return RedirectToAction("Edit");
             }
             return View(status.Data);
         }
 
-        //[HttpPost]
-        //public JsonResult AddCompany(ConsumerCompanyModel model)
-        //{
-        //    return Json(CreateConsumerCompany(model));
-        //}
+        [HttpPost]
+        public JsonResult AddCompany(ConsumerCompanyModel model)
+        {
+            return Json(CreateConsumerCompany(model));
+        }
 
         private MethodStatus<ConsumerCompanyManager.ConsumerCompany> CreateConsumerCompany(ConsumerCompanyModel model)
         {
@@ -188,35 +227,35 @@ namespace Luka.Areas.Tools.Controllers
         [HttpPost]
         public JsonResult AddFromCheckout(ConsumerManager.Consumer consumer)
         {
-            //if (ModelState.IsValid)
-            //{
-            //    var consCompstatus = new MethodStatus<ConsumerCompanyManager.ConsumerCompany>();
-            //    if (!consumer.ConsumerCompanyName.IsNullOrEmpty())
-            //    {
-            //        consCompstatus =
-            //            CreateConsumerCompany(new ConsumerCompanyModel
-            //            {
-            //                CompanyName = consumer.ConsumerCompanyName.Trim()
-            //            });
-            //        var consComp = consCompstatus.Data;
-            //        if (!consCompstatus.IsError)
-            //        {
-            //            consumer.ConsumerCompanyId = consComp.ConsumerCompanyId;
-            //        }
-            //    }
-            //    if (!consCompstatus.IsError)
-            //    {
-            //        var updateConsumer = _consumerManager.Create(consumer);
-            //        if (!updateConsumer.IsError && !updateConsumer.Message.Contains("error"))
-            //        {
-            //            consumer = updateConsumer.Data;
-            //        }
-            //        else
-            //        {
-            //            updateConsumer.HandleFrontEndError();
-            //        }
-            //    }
-            //}
+            if (ModelState.IsValid)
+            {
+                var consCompstatus = new MethodStatus<ConsumerCompanyManager.ConsumerCompany>();
+                if (!consumer.ConsumerCompanyName.IsNullOrEmpty())
+                {
+                    consCompstatus =
+                        CreateConsumerCompany(new ConsumerCompanyModel
+                        {
+                            CompanyName = consumer.ConsumerCompanyName.Trim()
+                        });
+                    var consComp = consCompstatus.Data;
+                    if (!consCompstatus.IsError)
+                    {
+                        consumer.ConsumerCompanyId = consComp.ConsumerCompanyId;
+                    }
+                }
+                //if (!consCompstatus.IsError)
+                //{
+                //    var updateConsumer = _consumerManager.Create(consumer);
+                //    if (!updateConsumer.IsError && !updateConsumer.Message.Contains("error"))
+                //    {
+                //        consumer = updateConsumer.Data;
+                //    }
+                //    else
+                //    {
+                //        updateConsumer.HandleFrontEndError();
+                //    }
+                //}
+            }
             return Json(new { Consumer = consumer }, JsonRequestBehavior.AllowGet);
         }
     }

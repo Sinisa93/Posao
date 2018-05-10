@@ -1,0 +1,37 @@
+﻿@model int?
+@{
+    var bindingGroup = "";
+    if (ViewData.ContainsKey("BindingGroup"))
+    {
+        bindingGroup = (string)ViewData["BindingGroup"];
+    }
+    int? countryId = null;
+    if (ViewData.ContainsKey("CountryId"))
+    {
+        countryId = (int?) ViewData["CountryId"];
+        countryId = countryId.HasValue && countryId.Value > 0 ? countryId : null;
+    }
+    if (!ViewData.ContainsKey("disabled")) {
+        ViewData["disabled"] = "";
+    }
+}
+<div class="padu5 clearfix">
+    <div class="label-style">
+        <label for="@ViewData.ModelMetadata.PropertyName">@ViewData.ModelMetadata.GetDisplayName()</label>
+        @if (ViewData.ModelMetadata.IsRequired)
+        {
+            <b class="co-warning">*</b>
+        }
+    </div>
+    <div class="input-style" data-role="states" data-state-id="@(ViewData.Model ?? 0)" data-country-id="@(countryId ?? 219)" data-binding-group="@bindingGroup" data-input-id="@(ViewData.ModelMetadata.PropertyName)" data-disabled="@ViewData["disabled"]"></div>
+    <br style="clear: both">
+    <div class="input-validation-message-wrapper">
+        @Html.ValidationMessageFor(model => model)
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        kendo.bind("[data-role='states']");
+    })
+</script>

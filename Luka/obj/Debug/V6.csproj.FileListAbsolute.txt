@@ -58,3 +58,5 @@ C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Luka\o
 C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Luka\obj\Debug\V6.csproj.CopyComplete
 C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Luka\obj\Debug\Luka.dll
 C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Luka\obj\Debug\Luka.pdb
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Luka\bin\Kendo.Mvc.dll
+C:\Users\Administrator\Dropbox\Propago - Code and Database\Sinisa Vujanic\Luka\bin\Kendo.Mvc.xml

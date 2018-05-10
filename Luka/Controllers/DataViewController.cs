@@ -91,5 +91,17 @@ namespace Luka.Controllers
             var results = JsonToObject.Convert("GetConsumers.json");
             return Json(results, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult GetCountryStateMap()
+        {
+            //Query string: ?ShowUserOrdersOnly=true&IsIndex=true&Page=1&PageSize=50&Skip=0&Take=50&Username=&Keyword=&OrderTag=&OrderNumber=&ProofName=&StatusId=Open&OrderDateStart=&OrderDateEnd=&UserGroup=&UserId=&PartName=&SKU=&PurchaseOrderNumber=&Custom01=&Country=&State=&City=&Zip=&Phone=&_=1524217889148
+            var results = JsonToObject.Convert("GetCountryStateMap.json");
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetConsumerTypes()
+        {
+            //Query string: ?ShowUserOrdersOnly=true&IsIndex=true&Page=1&PageSize=50&Skip=0&Take=50&Username=&Keyword=&OrderTag=&OrderNumber=&ProofName=&StatusId=Open&OrderDateStart=&OrderDateEnd=&UserGroup=&UserId=&PartName=&SKU=&PurchaseOrderNumber=&Custom01=&Country=&State=&City=&Zip=&Phone=&_=1524217889148
+            var results = JsonToObject.Convert("GetConsumerTypes.json");
+            return Json(results, JsonRequestBehavior.AllowGet);
+        }
     }
 }

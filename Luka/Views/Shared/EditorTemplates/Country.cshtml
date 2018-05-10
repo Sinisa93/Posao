@@ -1,0 +1,30 @@
+﻿@model int?
+@{
+    var bindingGroup = "";
+    var propertyName = ViewData.ModelMetadata.PropertyName;
+    if (ViewData.ContainsKey("BindingGroup"))
+    {
+        bindingGroup = (string) ViewData["BindingGroup"];
+        propertyName = bindingGroup + "_" + ViewData.ModelMetadata.PropertyName;
+    }
+    if (!ViewData.ContainsKey("disabled")) {
+        ViewData["disabled"] = "";
+    }
+}
+<div class="padu5 clearfix">
+    <div class="label-style">
+        <label for="@(propertyName)">@ViewData.ModelMetadata.GetDisplayName()</label>
+        @if (ViewData.ModelMetadata.IsRequired)
+        {
+            <b class="co-warning">*</b>
+        }
+    </div>
+    <div class="input-style" data-role="countries" data-country-id="@(ViewData.Model == 0 ? "~{DefaultCountryId}~" : ViewData.Model.ToString())" data-binding-group="@bindingGroup" data-input-id="@(propertyName)" data-disabled="@ViewData["disabled"]"></div>
+    <br style="clear: both">
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        kendo.bind("[data-role='countries']");
+    })
+</script>

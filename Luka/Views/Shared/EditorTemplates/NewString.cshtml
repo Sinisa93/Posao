@@ -1,0 +1,133 @@
+﻿@model object
+@{
+    var labelOverride = ViewData.ModelMetadata.GetDisplayName();
+    int? maxLength = null;
+    var isDisabled = false;
+    var placeholder = "";
+    var pattern = "";
+    var type = "";
+    var patternMessage = "";
+    var required = false;
+    var requiredMessage = "";
+    var css = "";
+
+    if (ViewData.ContainsKey("labelOverride")) {
+        labelOverride = (string)ViewData["labelOverride"];
+    }
+    if (ViewData.ContainsKey("disabled"))
+    {
+        isDisabled = (bool)ViewData["disabled"];
+    }
+
+
+    if (ViewData.ContainsKey("maxlength"))
+    {
+        maxLength = (int?)ViewData["maxlength"];
+    }
+
+    if (ViewData.ContainsKey("css")) {
+        css = (string)ViewData["css"];
+    }
+
+    if(ViewData.ContainsKey("placeholder"))
+    {
+        placeholder = ViewData["placeholder"].ToString();
+    }
+
+    if(ViewData.ContainsKey("pattern"))
+    {
+        pattern = ViewData["pattern"].ToString();
+    }
+    if(ViewData.ContainsKey("patternMessage"))
+    {
+        patternMessage = ViewData["patternMessage"].ToString();
+    }
+
+    if (ViewData.ContainsKey("type"))
+    {
+        type = ViewData["type"].ToString();
+    }
+    if (ViewData.ContainsKey("required"))
+    {
+        required = (bool)ViewData["required"];
+        if (ViewData.ContainsKey("requiredMessage"))
+        {
+            requiredMessage = ViewData["requiredMessage"].ToString();
+        }
+
+    }
+}
+@functions
+{
+
+    static Dictionary<string, object> GetHtmlAttribute(bool readOnly, string maxLength, string placeholder, string pattern, string type, string patternMessage,
+        bool required, string requiredMessage)
+    {
+        var attributes = new Dictionary<string, object>();
+        if (!string.IsNullOrEmpty(pattern) || required)
+        {
+            if (required)
+            {
+                attributes.Add("required", "required");
+                if (!string.IsNullOrEmpty(requiredMessage))
+                {
+                    attributes.Add("data-val-required", requiredMessage);
+                }
+            }
+            if (!string.IsNullOrEmpty(pattern))
+            {
+                attributes.Add("pattern", pattern);
+                if(!string.IsNullOrEmpty(patternMessage))
+                {
+                    attributes.Add("data-pattern-msg", patternMessage);
+                }
+            }
+        }
+        else if (readOnly)
+        {
+            if (!string.IsNullOrEmpty(maxLength))
+            {
+                attributes.Add("class", "disabledInput");
+                attributes.Add("readonly", "readonly");
+            }
+            else
+            {
+                attributes.Add("class", "disabledInput");
+                attributes.Add("readonly", "readonly");
+            }
+        }
+        if (!string.IsNullOrEmpty(maxLength))
+        {
+            attributes.Add("maxlength", maxLength);
+        }
+        if (!string.IsNullOrEmpty(placeholder))
+        {
+            attributes.Add("placeholder", placeholder);
+        }
+
+        if (!string.IsNullOrEmpty(type))
+        {
+            attributes.Add("type", type);
+        }
+        return attributes;
+    }
+}
+<div class="padu5 clearfix @css">
+    <div>
+        <div class="label-style">
+            <label for="@ViewData.ModelMetadata.PropertyName">@labelOverride</label>
+            @if (ViewData.ModelMetadata.IsRequired || required) {
+                <b class="co-warning">*</b>
+            }
+        </div>
+        <div class="input-style">
+            @Html.Kendo().TextBoxFor(model => model).HtmlAttributes(GetHtmlAttribute(isDisabled, maxLength.ToString(), placeholder, pattern, type, patternMessage, required, requiredMessage))
+                
+
+        </div>
+        <br style="clear: both">
+    </div>
+    <div class="input-validation-message-wrapper">
+        @Html.ValidationMessageFor(model => model)
+    </div>
+</div>

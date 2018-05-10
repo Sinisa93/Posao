@@ -1,0 +1,15 @@
+﻿{
+  "TotalRecords": 1,
+  "Skip": 0,
+  "Take": 50,
+  "ReturnCode": 200,
+  "Records": [
+    {
+      "ConsumerTypeId": 19,
+      "ConsumerTypeDesc": "Contact"
+    }
+  ],
+  "Message": null,
+  "Guid": null,
+  "ReturnResponse": null
+}

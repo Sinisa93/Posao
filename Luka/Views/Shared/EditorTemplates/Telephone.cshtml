@@ -1,0 +1,42 @@
+﻿@model object
+@{
+    var labelOverride = ViewData.ModelMetadata.GetDisplayName();
+
+    if (ViewData.ContainsKey("labelOverride"))
+    {
+        labelOverride = (string)ViewData["labelOverride"];
+    }
+    var isDisabled = false;
+    if (ViewData.ContainsKey("disabled"))
+    {
+        isDisabled = (bool)ViewData["disabled"];
+    }
+}
+@functions
+{
+
+    object GetHtmlAttributeForReadonly(bool readOnly)
+    {
+        if (readOnly)
+        {
+            return new { @class = "k-textbox", @readonly = "readonly" };
+        }
+        return new { @class = "k-textbox" };
+    }
+
+}
+<div class="padu5 clearfix">
+    <div class="label-style">
+        <label for="@ViewData.ModelMetadata.PropertyName">@labelOverride</label>
+        @if (ViewData.ModelMetadata.IsRequired) {
+            <b class="co-warning">*</b>
+        }
+    </div>
+    <div class="input-style">
+        @(Html.Kendo().MaskedTextBoxFor(model => model)
+            .Mask("(999) 000-0000")
+            .HtmlAttributes(GetHtmlAttributeForReadonly(isDisabled))
+        )
+    </div>
+    <br style="clear: both">
+</div>

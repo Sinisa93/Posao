@@ -47,6 +47,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <Reference Include="Kendo.Mvc">
+      <HintPath>D:\Propago - Code and Database\PROJEKAT\lib\KENDOUIMVC\2015.3.1111\Kendo.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
@@ -181,6 +184,7 @@
     <Compile Include="AdditionalContent\Areas\Tools\Consumers\IFrontEndManager.cs" />
     <Compile Include="AdditionalContent\Areas\Tools\Consumers\ISearch.cs" />
     <Compile Include="AdditionalContent\Areas\Tools\Consumers\ISearchObject.cs" />
+    <Compile Include="AdditionalContent\Areas\Tools\Consumers\PagedClientResponse.cs" />
     <Compile Include="AdditionalContent\Areas\Tools\Consumers\PropertyInfoExtensions.cs" />
     <Compile Include="AdditionalContent\Areas\Tools\Consumers\RecordSizeCategory.cs" />
     <Compile Include="AdditionalContent\Areas\Tools\Consumers\ReturnResponse.cs" />
@@ -351,6 +355,8 @@
     <Content Include="Controllers\JSON\GetConsumers.json" />
     <Content Include="Areas\Tools\Views\Consumers\Edit.cshtml" />
     <Content Include="Areas\Tools\Views\Consumers\Add.cshtml" />
+    <Content Include="Controllers\JSON\GetCountryStateMap.json" />
+    <Content Include="Controllers\JSON\GetConsumerTypes.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ControlLoader.js" />
     <Content Include="Scripts\controls.min.js" />
@@ -428,6 +434,12 @@
     <Content Include="Views\Shared\Partials\Bundles\_jQueryUpload.cshtml" />
     <Content Include="Views\Shared\Partials\Bundles\_Main.cshtml" />
     <Content Include="Views\Shared\Partials\Bundles\_Masonry.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\NewString.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ConsumerType.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ConsumerCompany.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Telephone.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\State.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Country.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
